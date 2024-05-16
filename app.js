@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const userRouter = require("./routes/users");
+const authRouter = require("./routes/auth");
 const cors = require("cors");
 
 dotenv.config(); // Load environment variables from .env file
@@ -11,7 +11,7 @@ app.use("/", cors(), (req, res) => {
   res.send("cors!");
 });
 
-app.use("/users", userRouter);
+app.use("/auth", authRouter);
 app.use("/videos", require("./routes/videos"));
 
 app.listen(6000);
