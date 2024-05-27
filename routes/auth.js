@@ -1,18 +1,14 @@
 const express = require("express");
+const { register, login, logout } = require("../controllers/AuthController");
 
 const router = express.Router();
 router.use(express.json());
 
-router.post("/register", (req, res) => {
-  res.send("Register route");
-});
-router.post("/login", (req, res) => {
-  res.send("Login route");
-});
+router.post("/register", register);
 
-router.post("/logout", (req, res) => {
-  res.send("Logout route");
-});
+router.post("/login", login);
+
+router.post("/logout", logout);
 
 /* TODO: Implement these routes
 router.post("/reset", (req, res) => {
