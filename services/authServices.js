@@ -17,6 +17,11 @@ const selectUserByEmail = async (email) => {
 };
 
 const registerUser = async ({ email, password }) => {
+  const existingUser = await selectUserByEmail(email);
+  if (existingUser) {
+    throw new Error("Email already exists");
+  }
+
   const salt = crypto.randomBytes(64).toString("base64");
   const hashedPassword = crypto
     .pbkdf2Sync(password, salt, 100000, 64, "sha512")
@@ -51,6 +56,7 @@ const loginUser = async ({ email, password }) => {
     expiresIn: "1h",
   });
 
+  // 이 토큰엔 인코딩된 사용자 정보(여기선 email)와 암호화된 서명이 들어있음. 나중에 서버에서 이 토큰을 받으면 서명을 확인하고 사용자 정보를 추출할 수 있음.
   return token;
 };
 

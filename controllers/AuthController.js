@@ -7,6 +7,9 @@ const register = async (req, res) => {
     res.status(201).json({ message: "회원가입 성공" });
   } catch (error) {
     console.error(error);
+    if (error.message === "Email already exists") {
+      return res.status(409).json({ message: "이미 사용중인 이메일입니다." });
+    }
     res.status(500).send("Internal Server Error");
   }
 };
