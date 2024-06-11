@@ -1,36 +1,37 @@
-const { connectToDatabase } = require("../utils/db");
+const Post = require("../models/Post");
+const User = require("../models/User");
 
-const insertPost = async (newPost) => {
-  const db = await connectToDatabase();
-  const posts = db.collection("posts");
-  const result = await posts.insertOne(newPost);
-  return result;
+const insertPost = async (postData) => {
+  const newPost = new Post(postData);
+  const savedPost = await newPost.save();
+
+  return savedPost;
 };
 
-const selectPosts = async () => {
-  const db = await connectToDatabase();
-  const posts = db.collection("posts");
-  const result = await posts.find({}).toArray();
-  return result;
+const selectAllPosts = async () => {
+  const posts = await Post.find();
+  return posts;
 };
 
 const selectPostById = async (id) => {
-  const db = await connectToDatabase();
-  const posts = db.collection("posts");
-  const result = await posts.findOne({ id });
-  return result;
+  const post = await Post.findById(id);
+  return post;
 };
 
 const deletePostById = async (id) => {
-  const db = await connectToDatabase();
-  const posts = db.collection("posts");
-  const result = await posts.deleteOne({ id });
-  return result;
+  const post = await Post.findByIdAndDelete(id);
+  return post;
+};
+
+const updatePostById = async (id, postData) => {
+  const updatedPost = await Post.findByIdAndUpdate(id, postData, { new: true });
+  return updatedPost;
 };
 
 module.exports = {
   insertPost,
-  selectPosts,
+  selectAllPosts,
   selectPostById,
   deletePostById,
+  updatePostById,
 };

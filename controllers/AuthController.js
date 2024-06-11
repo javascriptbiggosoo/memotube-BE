@@ -18,14 +18,19 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const token = await loginUser({ email, password });
-    res.status(200).json({ message: "로그인 성공", token, email });
+    res.status(200).json({ message: "로그인 성공", token });
   } catch (error) {
     console.error(error);
     res.status(401).json({ message: "이메일 또는 비밀번호가 잘못되었습니다." });
   }
 };
 
+const logout = async (req, res) => {
+  res.status(200).json({ message: "로그아웃 성공" });
+};
+
 module.exports = {
   register,
   login,
+  logout,
 };

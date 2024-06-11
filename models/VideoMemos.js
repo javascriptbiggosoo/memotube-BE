@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { memoSchema } = require("./Memo");
 
 const videoMemosSchema = new mongoose.Schema({
   id: {
@@ -9,14 +10,9 @@ const videoMemosSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  memos: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Memo",
-    },
-  ],
+  memos: [memoSchema],
 });
 
 const VideoMemos = mongoose.model("VideoMemos", videoMemosSchema);
 
-module.exports = VideoMemos;
+module.exports = { VideoMemos, videoMemosSchema };

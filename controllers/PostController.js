@@ -1,61 +1,71 @@
-const dotenv = require("dotenv");
-const { connectToDatabase } = require("../utils/db");
-const { insertPost } = require("../services/postService");
-
-dotenv.config();
-
-const dummyVideoMemo = {
-  id: "",
-  videoId: "hnanNlDbsE4",
-  memos: [
-    {
-      memoTime: "44:23",
-      memoText: "아무 장수 챌린지",
-      id: "0",
-      createdAt: new Date().getTime(),
-    },
-    {
-      memoTime: "1:27:22",
-      memoText: "메오대전",
-      id: "1",
-      createdAt: new Date().getTime(),
-    },
-  ],
-};
-const dummyPost = {
-  id: crypto.randomUUID(),
-  thumbnail: "https://img.youtube.com/vi/hnanNlDbsE4/mqdefault.jpg",
-  title: "침국지 드립 모음",
-  content: dummyVideoMemo,
-  author: "User",
-  createdAt: new Date().getTime(),
-  likeCount: 0,
-  category: "humor",
-  likes: { likeCount: 0, likedUser: [] },
-};
+const {
+  insertPost,
+  selectAllPosts,
+  selectPostById,
+  deletePostById,
+  updatePostById,
+} = require("../services/postService");
+const decodeJwt = require("../utils/auth");
 
 const createPost = async (req, res) => {
-  const newPost = dummyPost;
+  const user = decodeJwt(req, res);
+  if (!user) return; // 로그인 안했을 때
 
   try {
-    const result = await insertPost(newPost);
-
-    res.send("Post created successfully");
+    const postData = { ...req.body, author: user.email };
+    const newPost = await insertPost(postData);
+    res.status(201).json(newPost);
   } catch (error) {
-    console.log(error);
-    res.send("An error occurred while creating a post");
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-const getPosts = async (req, res) => {};
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await selectAllPosts();
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
-const getPostById = async (req, res) => {};
+const getPostById = async (req, res) => {
+  try {
+    const post = await selectPostById(req.params.id);
+    res.status(200).json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
-const removePostById = async (req, res) => {};
+const removePostById = async (req, res) => {
+  try {
+    const post = await deletePostById(req.params.id);
+    res.status(200).json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const replacePostById = async (req, res) => {
+  try {
+    const postData = req.body;
+    const updatedPost = await updatePostById(req.params.id, postData);
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 module.exports = {
-  getPosts,
-  getPostById,
   createPost,
+  getAllPosts,
+  getPostById,
   removePostById,
+  replacePostById,
 };

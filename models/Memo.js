@@ -21,4 +21,4 @@ const memoSchema = new mongoose.Schema({
 
 const Memo = mongoose.model("Memo", memoSchema);
 
-module.exports = Memo;
+module.exports = { Memo, memoSchema };

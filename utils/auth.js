@@ -2,7 +2,10 @@ const jwt = require("jsonwebtoken");
 
 function decodeJwt(req, res) {
   try {
-    const token = req.headers.authorization;
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(" ")[1]; // Bearer 제거
+
+    // console.log(token);
 
     if (!token) {
       throw new ReferenceError("토큰이 없습니다.");

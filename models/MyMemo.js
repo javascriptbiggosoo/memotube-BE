@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { videoMemosSchema } = require("./VideoMemos");
 
 const myMemoSchema = new mongoose.Schema({
   id: {
@@ -17,10 +18,7 @@ const myMemoSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  content: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "VideoMemos",
-  },
+  content: videoMemosSchema,
 });
 
 const MyMemo = mongoose.model("MyMemo", myMemoSchema);

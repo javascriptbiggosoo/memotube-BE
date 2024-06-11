@@ -25,10 +25,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  content: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "VideoMemos",
-  },
+  content: videoMemosSchema,
   author: {
     type: String,
     required: true,

@@ -1,19 +1,41 @@
-const { connectToDatabase } = require("../utils/db");
+const MyMemo = require("../models/MyMemo");
+const User = require("../models/User");
 
-const insertMyMemo = async (newMyMemo) => {
-  const db = await connectToDatabase();
+const insertMyMemo = async (myMemoData, email) => {
+  const newMyMemo = new MyMemo(myMemoData);
+  const savedMyMemo = await newMyMemo.save();
+
+  await User.findOneAndUpdate(
+    { email },
+    { $push: { mylist: savedMyMemo._id } }
+  );
+
+  return savedMyMemo;
 };
 
-const selectMylist = async () => {
-  const db = await connectToDatabase();
+const selectMylist = async (email) => {
+  const user = await User.findOne({ email }).populate("mylist");
+  return user.mylist;
 };
 
 const selectMyMemoById = async (id) => {
-  const db = await connectToDatabase();
+  const myMemo = await MyMemo.findById(id);
+  return myMemo;
 };
 
-const deleteMyMemoById = async (id) => {
-  const db = await connectToDatabase();
+const deleteMyMemoById = async (id, email) => {
+  const myMemo = await MyMemo.findByIdAndDelete(id);
+  if (myMemo) {
+    await User.findOneAndUpdate({ email }, { $pull: { mylist: myMemo._id } });
+  }
+  return myMemo;
+};
+
+const updateMyMemoById = async (id, myMemoData) => {
+  const updatedMyMemo = await MyMemo.findByIdAndUpdate(id, myMemoData, {
+    new: true,
+  });
+  return updatedMyMemo;
 };
 
 module.exports = {
@@ -21,4 +43,5 @@ module.exports = {
   selectMylist,
   selectMyMemoById,
   deleteMyMemoById,
+  updateMyMemoById,
 };
