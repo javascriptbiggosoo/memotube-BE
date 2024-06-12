@@ -7,6 +7,7 @@ const {
 } = require("../services/myListServices");
 const decodeJwt = require("../utils/auth");
 
+// 클리어
 const createMyMemo = async (req, res) => {
   const user = decodeJwt(req, res);
   if (!user) return; // 로그인 안했을 때
@@ -22,10 +23,11 @@ const createMyMemo = async (req, res) => {
   }
 };
 
+// 클리어
 const getMyList = async (req, res) => {
   const user = decodeJwt(req, res);
   if (!user) return; // 로그인 안했을 때
-
+  // console.log(user.email);
   try {
     const myList = await selectMylist(user.email);
     res.status(200).json(myList);
@@ -38,9 +40,9 @@ const getMyList = async (req, res) => {
 const getMyMemoById = async (req, res) => {
   const user = decodeJwt(req, res);
   if (!user) return; // 로그인 안했을 때
-
+  console.log("getMyMemoById");
   try {
-    const myMemo = await selectMyMemoById(req.params.id);
+    const myMemo = await selectMyMemoById(req.params.memoId);
     res.status(200).json(myMemo);
   } catch (error) {
     console.error(error);
@@ -53,7 +55,7 @@ const removeMyMemoById = async (req, res) => {
   if (!user) return; // 로그인 안했을 때
 
   try {
-    const myMemo = await deleteMyMemoById(req.params.id, user.email);
+    const myMemo = await deleteMyMemoById(req.params.memoId, user.email);
     res.status(200).json(myMemo);
   } catch (error) {
     console.error(error);
@@ -67,7 +69,7 @@ const replaceMyMemoById = async (req, res) => {
 
   try {
     const myMemoData = req.body;
-    const updatedMyMemo = await updateMyMemoById(req.params.id, myMemoData);
+    const updatedMyMemo = await updateMyMemoById(req.params.memoId, myMemoData);
     res.status(200).json(updatedMyMemo);
   } catch (error) {
     console.error(error);

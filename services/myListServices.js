@@ -2,6 +2,7 @@ const MyMemo = require("../models/MyMemo");
 const User = require("../models/User");
 
 const insertMyMemo = async (myMemoData, email) => {
+  console.log("insertMyMemo");
   const newMyMemo = new MyMemo(myMemoData);
   const savedMyMemo = await newMyMemo.save();
 
@@ -14,12 +15,15 @@ const insertMyMemo = async (myMemoData, email) => {
 };
 
 const selectMylist = async (email) => {
+  // const user = await User.findOne({ email });
   const user = await User.findOne({ email }).populate("mylist");
+  // console.log(user.mylist);
   return user.mylist;
 };
 
 const selectMyMemoById = async (id) => {
-  const myMemo = await MyMemo.findById(id);
+  const myMemo = await MyMemo.findOne({ id });
+  console.log(myMemo);
   return myMemo;
 };
 

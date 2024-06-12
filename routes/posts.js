@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  getPosts,
+  getAllPosts,
   createPost,
   getPostById,
   removePostById,
@@ -11,7 +11,7 @@ router.use(express.json());
 
 router.post("/", createPost);
 
-router.get("/", getPosts);
+router.get("/", getAllPosts);
 
 router.get("/:postId", getPostById);
 

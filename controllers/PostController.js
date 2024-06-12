@@ -33,7 +33,7 @@ const getAllPosts = async (req, res) => {
 
 const getPostById = async (req, res) => {
   try {
-    const post = await selectPostById(req.params.id);
+    const post = await selectPostById(req.params.postId);
     res.status(200).json(post);
   } catch (error) {
     console.error(error);
@@ -43,7 +43,7 @@ const getPostById = async (req, res) => {
 
 const removePostById = async (req, res) => {
   try {
-    const post = await deletePostById(req.params.id);
+    const post = await deletePostById(req.params.postId);
     res.status(200).json(post);
   } catch (error) {
     console.error(error);
@@ -54,7 +54,7 @@ const removePostById = async (req, res) => {
 const replacePostById = async (req, res) => {
   try {
     const postData = req.body;
-    const updatedPost = await updatePostById(req.params.id, postData);
+    const updatedPost = await updatePostById(req.params.postId, postData);
     res.status(200).json(updatedPost);
   } catch (error) {
     console.error(error);

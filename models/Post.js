@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { videoMemosSchema } = require("./VideoMemos");
 
 const likesSchema = new mongoose.Schema({
   likeCount: {

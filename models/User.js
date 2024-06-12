@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   mylist: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Memo",
+      ref: "MyMemo",
     },
   ],
 });
