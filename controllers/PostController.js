@@ -22,9 +22,11 @@ const createPost = async (req, res) => {
 };
 
 const getAllPosts = async (req, res) => {
+  const { page, limit } = req.query;
+
   try {
-    const posts = await selectAllPosts();
-    res.status(200).json(posts);
+    const { posts, totalPosts } = await selectAllPosts(page, limit);
+    res.status(200).json({ posts, totalPosts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
