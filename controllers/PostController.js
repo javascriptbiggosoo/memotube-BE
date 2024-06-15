@@ -4,14 +4,15 @@ const {
   selectPostById,
   deletePostById,
   updatePostById,
+  likePost,
+  unlikePost,
 } = require("../services/postService");
 const decodeJwt = require("../utils/auth");
 
 const createPost = async (req, res) => {
-  const user = decodeJwt(req, res);
-  if (!user) return; // 로그인 안했을 때
-
   try {
+    const user = decodeJwt(req, res);
+
     const postData = { ...req.body, author: user.email };
     const newPost = await insertPost(postData);
     res.status(201).json(newPost);
@@ -45,6 +46,8 @@ const getPostById = async (req, res) => {
 
 const removePostById = async (req, res) => {
   try {
+    const user = decodeJwt(req, res);
+
     const post = await deletePostById(req.params.postId);
     res.status(200).json(post);
   } catch (error) {
@@ -55,6 +58,8 @@ const removePostById = async (req, res) => {
 
 const replacePostById = async (req, res) => {
   try {
+    const user = decodeJwt(req, res);
+
     const postData = req.body;
     const updatedPost = await updatePostById(req.params.postId, postData);
     res.status(200).json(updatedPost);
@@ -64,10 +69,36 @@ const replacePostById = async (req, res) => {
   }
 };
 
+const likePostController = async (req, res) => {
+  try {
+    const user = decodeJwt(req, res);
+
+    const { postId } = req.params;
+    const updatedPost = await likePost(postId, user.email);
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const unlikePostController = async (req, res) => {
+  try {
+    const user = decodeJwt(req, res);
+
+    const { postId } = req.params;
+    const updatedPost = await unlikePost(postId, user._id);
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   removePostById,
   replacePostById,
+  likePostController,
+  unlikePostController,
 };
