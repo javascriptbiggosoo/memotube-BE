@@ -1,7 +1,9 @@
 const { registerUser, loginUser } = require("../services/authServices");
 
-const register = async (req, res) => {
+const signup = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password);
+
   try {
     await registerUser({ email, password });
     res.status(201).json({ message: "회원가입 성공" });
@@ -30,7 +32,7 @@ const logout = async (req, res) => {
 };
 
 module.exports = {
-  register,
+  signup,
   login,
   logout,
 };
