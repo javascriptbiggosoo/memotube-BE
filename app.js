@@ -11,9 +11,11 @@ dotenv.config(); // Load environment variables from .env file
 const app = express();
 
 const corsOptions = {
-  origin: process.env.CLIENT_ORIGIN || "*",
+  origin: "https://javascriptbiggosoo.github.io",
+  // origin: "http://localhost:5173",
+  // origin: "https://javascriptbiggosoo.github.io",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept"],
   optionsSuccessStatus: 204,
   credentials: true, // Access-Control-Allow-Credentials 설정
 };

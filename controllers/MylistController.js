@@ -25,6 +25,7 @@ const createMyMemo = async (req, res) => {
 // 클리어
 const getMyList = async (req, res) => {
   try {
+    console.log("getMyList");
     const user = decodeJwt(req, res);
 
     const myList = await selectMylist(user.email);
