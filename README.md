@@ -2,6 +2,8 @@
 
 Memotube는 YouTube 비디오에 대한 메모를 작성하고 관리할 수 있는 웹 애플리케이션입니다. 이 저장소는 Memotube 애플리케이션의 백엔드를 구성하며, Node.js와 Express를 사용하여 구축되었습니다. 데이터 저장소로는 MongoDB를 사용하고 있습니다.
 
+프론트엔드 코드: https://github.com/javascriptbiggosoo/memotube
+
 ## 주요 기능
 
 - **사용자 인증**: JWT(JSON Web Token)를 사용한 사용자 등록 및 로그인 기능
